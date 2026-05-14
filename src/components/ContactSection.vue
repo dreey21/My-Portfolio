@@ -12,24 +12,65 @@
       <input v-model="form.name"    type="text"  class="form-input" placeholder="Enter your name*"  required>
       <input v-model="form.email"   type="email" class="form-input" placeholder="Enter your email*" required>
       <input v-model="form.phone"   type="tel"   class="form-input" placeholder="Phone number">
-      <textarea v-model="form.message"           class="form-input" placeholder="Your message*" required />
-      <button type="submit" class="submit-btn">{{ submitLabel }}</button>
+      <textarea v-model="form.message" class="form-input" placeholder="Your message*" required />
+
+      <button
+        type="submit"
+        class="submit-btn"
+        :class="{ 'is-sent': sent, 'is-error': error }"
+        :disabled="sending"
+      >
+        <span v-if="sending">Sending...</span>
+        <span v-else-if="sent">Message Sent</span>
+        <span v-else-if="error">Failed. Try Again.</span>
+        <span v-else>Submit</span>
+      </button>
     </form>
   </section>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
+import emailjs from '@emailjs/browser'
 import { useFadeUpSingle } from '@/composables/useAnimate.js'
 import AppOrnament from './AppOrnament.vue'
 
-const submitLabel = ref('Submit')
+const SERVICE_ID  = 'service_dfs9m76'
+const TEMPLATE_ID = 'template_id3smyg'
+const PUBLIC_KEY  = 'zApyw5E1LaSvgeLVy'
+
+const sending = ref(false)
+const sent    = ref(false)
+const error   = ref(false)
+
 const form = reactive({ name: '', email: '', phone: '', message: '' })
 
-function handleSubmit() {
-  submitLabel.value = 'Message Sent!'
-  Object.assign(form, { name: '', email: '', phone: '', message: '' })
-  setTimeout(() => { submitLabel.value = 'Submit' }, 3000)
+async function handleSubmit() {
+  sending.value = true
+  sent.value    = false
+  error.value   = false
+
+  try {
+    await emailjs.send(
+      SERVICE_ID,
+      TEMPLATE_ID,
+      {
+        from_name:  form.name,
+        from_email: form.email,
+        phone:      form.phone || 'Not provided',
+        message:    form.message,
+      },
+      PUBLIC_KEY
+    )
+    sent.value = true
+    Object.assign(form, { name: '', email: '', phone: '', message: '' })
+    setTimeout(() => { sent.value = false }, 4000)
+  } catch (e) {
+    error.value = true
+    setTimeout(() => { error.value = false }, 4000)
+  } finally {
+    sending.value = false
+  }
 }
 
 const { elRef: headerRef, visible: headerVisible, observe: observeHeader } = useFadeUpSingle()
@@ -50,8 +91,22 @@ onMounted(observeHeader)
 .form-input::placeholder { color: #999; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; }
 .form-input:focus { border-color: var(--black); }
 textarea.form-input { resize: vertical; min-height: 120px; }
-.submit-btn { align-self: center; font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; background: none; border: none; cursor: pointer; color: var(--black); border-left: 2px solid var(--black); border-right: 2px solid var(--black); padding: 10px 32px; transition: background 0.2s, color 0.2s; margin-top: 8px; }
-.submit-btn:hover { background: var(--black); color: var(--white); }
+
+.submit-btn {
+  align-self: center; font-family: var(--font-label); font-size: 0.75rem; letter-spacing: 4px;
+  text-transform: uppercase; background: none; border: none; cursor: pointer; color: var(--black);
+  border-left: 2px solid var(--black); border-right: 2px solid var(--black);
+  padding: 10px 32px; transition: background 0.3s, color 0.3s, border-color 0.3s;
+  margin-top: 8px; min-width: 180px;
+}
+.submit-btn:hover:not(:disabled) { background: var(--black); color: var(--white); }
+.submit-btn:disabled { cursor: not-allowed; }
+
+/* Sent state — filled black, same as hover */
+.submit-btn.is-sent { background: var(--black); color: var(--white); }
+
+/* Error state — dimmed, border fades */
+.submit-btn.is-error { border-color: #999; color: #999; }
 
 @media (max-width: 768px) {
   .contact-form { padding: 0 28px 60px; }

@@ -4,7 +4,7 @@ import { ref, nextTick } from 'vue'
 /**
  * Staggered fade-up for a list of elements via IntersectionObserver.
  */
-export function useFadeUp(count, staggerMs = 50, threshold = 0.1) {
+export function useFadeUp(count, staggerMs = 50, threshold = 0.15) {
   const elRefs       = ref([])
   const visibleFlags = ref(Array(count).fill(false))
 
@@ -27,7 +27,7 @@ export function useFadeUp(count, staggerMs = 50, threshold = 0.1) {
 /**
  * Single element fade-up on scroll.
  */
-export function useFadeUpSingle(threshold = 0.15) {
+export function useFadeUpSingle(threshold = 0.2) {
   const elRef   = ref(null)
   const visible = ref(false)
 

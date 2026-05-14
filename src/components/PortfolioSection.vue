@@ -144,9 +144,31 @@ onMounted(() => {
 .portfolio-more { text-align: center; padding: 32px; font-family: var(--font-label); font-size: 0.72rem; letter-spacing: 4px; color: #555; text-transform: uppercase; }
 
 @media (max-width: 768px) {
-  .portfolio-banner { height: 200px; }
-  .section-title-box { padding: 12px 28px; }
-  .portfolio-grid { grid-template-columns: 1fr; }
-  .portfolio-featured { grid-column: 1; grid-row: auto; }
+  .portfolio-tabs {
+    gap: 20px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    justify-content: center;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .portfolio-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tab-btn {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+  }
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  .portfolio-featured {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .placeholder {
+    aspect-ratio: 16/9;
+  }
 }
 </style>

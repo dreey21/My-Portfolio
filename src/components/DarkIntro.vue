@@ -4,17 +4,19 @@
       <div class="dark-label">Commissioned Work</div>
       <h2>Proposed. Built. Delivered.</h2>
       <p>
-        Commissioned web systems designed from scratch, covering the
-        full stack from Laravel backend to Vue.js frontend. Fresh
-        graduate, with real end-to-end project experience.
+        I build web systems that solve real institutional problems, 
+        from campus safety platforms to training management tools. 
+        Fresh graduate, three delivered systems, and a clear focus 
+        on clean backend architecture.
       </p>
       <span class="read-more-btn" @click="emit('scroll-to', 'about')">Read More</span>
     </div>
     <div>
       <p class="dark-sub">
-        Commissioned by students as capstone projects, built on Laravel,
-        Laravel Blade, and MySQL with Vue.js frontends. One includes an
-        experimental AI-powered input feature, with refinement ongoing.
+        Every system I've built started with a problem worth solving. 
+        I propose, scope, and ship, handling the full stack from 
+        database design to user interface, with real users and real 
+        workflows in mind.
       </p>
     </div>
   </div>
