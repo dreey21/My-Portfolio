@@ -1,4 +1,5 @@
 <template>
+  <Analytics />
   <AppNav         @scroll-to="scrollTo" />
   <HeroSection />
   <DarkIntro      @scroll-to="scrollTo" />
@@ -12,6 +13,7 @@
 </template>
 
 <script setup>
+import { Analytics } from '@vercel/analytics/vue'
 import AppNav            from '@/components/AppNav.vue'
 import HeroSection       from '@/components/HeroSection.vue'
 import DarkIntro         from '@/components/DarkIntro.vue'
