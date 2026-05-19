@@ -9,7 +9,6 @@
   <EducationSection />
   <ContactSection />
   <AppFooter      @scroll-to="scrollTo" />
-  <Analytics />
 </template>
 
 <script setup>
@@ -23,7 +22,9 @@ import PortfolioSection  from '@/components/PortfolioSection.vue'
 import EducationSection  from '@/components/EducationSection.vue'
 import ContactSection    from '@/components/ContactSection.vue'
 import AppFooter         from '@/components/AppFooter.vue'
-import { Analytics }     from '@vercel/analytics/vue'
+
+
+inject()
 
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
