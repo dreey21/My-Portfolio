@@ -22,6 +22,7 @@ import PortfolioSection  from '@/components/PortfolioSection.vue'
 import EducationSection  from '@/components/EducationSection.vue'
 import ContactSection    from '@/components/ContactSection.vue'
 import AppFooter         from '@/components/AppFooter.vue'
+import { inject } from '@vercel/analytics'
 
 
 inject()
