@@ -49,9 +49,9 @@ const experience = [
     bullets: [
       'Shipped a full-stack LMS on Laravel 12 and PHP 8.2 with Blade, Vite, Tailwind CSS, Alpine.js, and Axios; auth via Laravel Breeze and Sanctum with custom RBAC, API key validation, and 2FA.',
       'Owned core domains: skill catalogs, gap analysis, MCQ assessments, course lifecycle, training assignments, certificates, employee profiles, and in-app and email notifications with queue workers.',
-      'Integrated Google Gemini AI for course recommendations, DomPDF and Excel for reporting, and Pest for automated testing; connected to 3 external systems via RESTful API.',
+      'Built reporting workflows with DomPDF and Excel, added Pest coverage for key flows, and connected to 3 external systems via RESTful API.',
     ],
-    tags: ['Laravel 12', 'PHP 8.2', 'Vue.js', 'MySQL', 'Gemini AI', 'REST API'],
+    tags: ['Laravel 12', 'PHP 8.2', 'Vue.js', 'MySQL', 'REST API'],
   },
   {
     date: '2026',
@@ -60,11 +60,11 @@ const experience = [
     project: 'OSAS | Campus Safety and Operations Platform',
     bullets: [
       'Built a full-stack school safety platform centered on incident reporting and tracking with role-based access for students, teachers, staff, admins, officers, and prefects.',
-      'Integrated Google Gemini AI for dashboard analytics and a chatbot for guided incident reporting with image upload and session persistence.',
-      'Implemented realtime updates via Pusher and Laravel Echo, incident and floor-plan map views, and modular tools for clinic, prefect, student, and facility management.',
+      'Implemented guided incident reporting with image upload, session persistence, and clear tracking across each report status.',
+      'Added realtime updates via Pusher and Laravel Echo, incident and floor-plan map views, and modular tools for clinic, prefect, student, and facility management.',
       'Added PDF and Excel export, Laravel Sanctum API for authenticated report access, and full incident lifecycle management with archiving.',
     ],
-    tags: ['Laravel 11', 'PHP 8.2', 'Pusher', 'Gemini AI', 'Alpine.js', 'Tailwind', 'MySQL'],
+    tags: ['Laravel 11', 'PHP 8.2', 'Pusher', 'Alpine.js', 'Tailwind', 'MySQL'],
   },
   {
     date: '2025',

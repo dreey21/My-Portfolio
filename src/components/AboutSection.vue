@@ -3,9 +3,9 @@
     <div class="section-header fade-up" :class="{ visible: headerVisible }" ref="headerRef">
       <div class="section-title-box">About Me</div>
       <p class="section-desc">
-        I'm a fullstack developer who proposes, builds, and delivers complete web systems.
-        From database design to frontend interface, I own the full process, and I'm currently
-        transitioning from Laravel Blade to Vue.js SPAs.
+        I'm a fullstack developer specializing in management systems for real workflows.
+        From database design to frontend interface, I propose, build, and deliver systems
+        that help teams organize requests, records, approvals, and operations.
       </p>
       <span class="explore-link" @click="emit('scroll-to', 'portfolio')">Explore</span>
       <AppOrnament />

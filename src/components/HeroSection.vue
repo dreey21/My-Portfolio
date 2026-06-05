@@ -4,7 +4,7 @@
       <div class="hero-logo-sm"></div>
       <p  class="hero-greeting fade-up"      :class="{ visible: show[0] }">Hi, I am</p>
       <h1 class="hero-name    fade-up-scale" :class="{ visible: show[1] }">Daniel Audrey Tresvalles</h1>
-      <p  class="hero-title   fade-up"       :class="{ visible: show[2] }">Fullstack Developer / Web Systems Developer</p>
+      <p  class="hero-title   fade-up"       :class="{ visible: show[2] }">Fullstack Developer</p>
 
       <div class="hero-actions fade-up" :class="{ visible: show[3] }">
         <div class="hero-socials">
@@ -66,13 +66,59 @@ onMounted(() => {
 .resume-btn:hover { background: var(--black); color: var(--white); }
 .resume-btn svg { width: 14px; height: 14px; fill: currentColor; }
 
-.hero-right { background: var(--black); position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
-.hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: center top; opacity: 0.7; mix-blend-mode: luminosity; filter: grayscale(30%); }
+.hero-right {
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hero-right::before,
+.hero-right::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-right::before {
+  background:
+    linear-gradient(90deg, rgba(17, 17, 17, 0.88) 0%, rgba(17, 17, 17, 0.48) 28%, rgba(17, 17, 17, 0.08) 58%, rgba(17, 17, 17, 0.36) 100%),
+    linear-gradient(180deg, rgba(17, 17, 17, 0.18) 0%, rgba(17, 17, 17, 0.58) 100%);
+}
+
+.hero-right::after {
+  border-left: 1px solid rgba(245, 245, 245, 0.06);
+  background:
+    linear-gradient(90deg, rgba(245, 245, 245, 0.04), transparent 16%),
+    repeating-linear-gradient(90deg, rgba(245, 245, 245, 0.035) 0, rgba(245, 245, 245, 0.035) 1px, transparent 1px, transparent 68px);
+  opacity: 0.38;
+  mix-blend-mode: screen;
+}
+
+.hero-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 14%;
+  opacity: 0.82;
+  mix-blend-mode: luminosity;
+  filter: grayscale(100%) contrast(1.16) brightness(0.68);
+  transform: scale(1.08);
+  transform-origin: center bottom;
+}
 
 @media (max-width: 768px) {
   #home { grid-template-columns: 1fr; grid-template-rows: 55vh auto; min-height: auto; }
   .hero-right { display: flex; grid-row: 1; height: 55vh; }
-  .hero-right img { object-position: center top; }
+  .hero-right img {
+    width: 100%;
+    object-position: 58% 18%;
+    transform: scale(1.08);
+  }
   .hero-left { grid-row: 2; padding: 40px 28px 60px; min-height: auto; justify-content: flex-start; }
   .hero-logo-sm { left: 28px; }
   .hero-actions { gap: 16px; }

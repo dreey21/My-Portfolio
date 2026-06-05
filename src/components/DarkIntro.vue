@@ -2,21 +2,21 @@
   <div class="dark-section">
     <div ref="leftRef" class="fade-up" :class="{ visible: leftVisible }">
       <div class="dark-label">Commissioned Work</div>
-      <h2>Proposed. Built. Delivered.</h2>
+      <h2>Proposed, Built, Delivered.</h2>
       <p>
-        I build web systems that solve real institutional problems, 
-        from campus safety platforms to training management tools. 
-        Fresh graduate, three delivered systems, and a clear focus 
-        on clean backend architecture.
+        I specialize in building management systems that organize 
+        real institutional workflows, from campus safety operations 
+        to training and facility reservation processes. Fresh graduate, 
+        three delivered systems, and a clear focus on clean backend architecture.
       </p>
       <span class="read-more-btn" @click="emit('scroll-to', 'about')">Read More</span>
     </div>
     <div>
       <p class="dark-sub">
-        Every system I've built started with a problem worth solving. 
-        I propose, scope, and ship, handling the full stack from 
-        database design to user interface, with real users and real 
-        workflows in mind.
+        Every system I've built started with a workflow that needed 
+        structure. I propose, scope, and ship, handling the full stack 
+        from database design to user interface, with real users and 
+        operational use cases in mind.
       </p>
     </div>
   </div>
