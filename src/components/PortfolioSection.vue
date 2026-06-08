@@ -15,9 +15,73 @@
       v-if="!isCompact"
       class="portfolio-story"
       ref="storyRef"
-      :style="{ '--detail-count': timeline.length }"
+      :style="projectStoryStyle"
     >
       <div class="project-sticky">
+        <div class="project-flow-backdrop" aria-hidden="true">
+          <span
+            v-for="segment in flowSegments"
+            :key="segment.id"
+            class="flow-segment"
+            :class="{
+              active: activeTimelineIndex >= segment.step,
+              current: activeTimelineIndex === segment.step,
+            }"
+            :style="{
+              '--segment-x': segment.x,
+              '--segment-y': segment.y,
+              '--segment-w': segment.w,
+              '--segment-h': segment.h,
+            }"
+          />
+          <span
+            v-for="branch in flowBranches"
+            :key="branch.id"
+            class="flow-branch"
+            :style="{
+              '--branch-x': branch.x,
+              '--branch-y': branch.y,
+              '--branch-w': branch.w,
+              '--branch-h': branch.h,
+            }"
+          />
+          <span
+            v-for="module in flowModules"
+            :key="module.id"
+            class="flow-module"
+            :style="{
+              '--module-x': module.x,
+              '--module-y': module.y,
+              '--module-w': module.w,
+              '--module-h': module.h,
+            }"
+          />
+          <span
+            v-for="ticket in flowTickets"
+            :key="ticket.id"
+            class="flow-ticket"
+            :class="[
+              `flow-ticket-${ticket.tone}`,
+              {
+                active: activeTimelineIndex === ticket.step,
+                nearby: Math.abs(activeTimelineIndex - ticket.step) <= 1,
+              },
+            ]"
+            :style="{
+              '--ticket-x': ticket.x,
+              '--ticket-y': ticket.y,
+              '--ticket-w': ticket.w,
+            }"
+          >
+            <span class="ticket-dot" />
+            <span class="ticket-line ticket-line-primary" />
+            <span class="ticket-line ticket-line-long" />
+            <span class="ticket-line ticket-line-short" />
+            <span class="ticket-cell ticket-cell-one" />
+            <span class="ticket-cell ticket-cell-two" />
+          </span>
+        </div>
+
         <div class="project-layout">
           <div class="project-sidebar">
             <div class="project-kicker">Featured Systems</div>
@@ -68,8 +132,8 @@
                 />
                 <div v-else class="video-placeholder">
                   <span class="placeholder-number">{{ projectNumber(activeProject) }}</span>
-                  <span class="placeholder-label">Video Pending</span>
-                  <span class="placeholder-title">{{ activeProjectData.title }}</span>
+                  <span class="placeholder-label">Pending</span>
+                  <span class="placeholder-title">Video Coming Soon</span>
                 </div>
               </div>
 
@@ -147,8 +211,8 @@
           />
           <div v-else class="video-placeholder">
             <span class="placeholder-number">{{ projectNumber(projectIndex) }}</span>
-            <span class="placeholder-label">Video Pending</span>
-            <span class="placeholder-title">{{ project.title }}</span>
+            <span class="placeholder-label">Pending</span>
+            <span class="placeholder-title">Video Coming Soon</span>
           </div>
         </div>
 
@@ -193,6 +257,7 @@ const storyRef = ref(null)
 const isCompact = ref(false)
 const activeProject = ref(0)
 const activeDetail = ref(0)
+const scrollProgress = ref(0)
 const mobileProjectRefs = ref([])
 const mobileDetailRefs = ref([])
 const mobileVisibleFlags = ref([])
@@ -206,6 +271,54 @@ const timeline = computed(() => projects.flatMap((project, projectIndex) =>
 const activeProjectData = computed(() => projects[activeProject.value] ?? projects[0])
 const activeDetailItems = computed(() => projectDetails(activeProjectData.value))
 const activeDetailData = computed(() => activeDetailItems.value[activeDetail.value] ?? activeDetailItems.value[0])
+const activeTimelineIndex = computed(() => timelineIndexFor(activeProject.value, activeDetail.value))
+const projectStoryStyle = computed(() => ({
+  '--detail-count': timeline.value.length,
+  '--story-progress': scrollProgress.value.toFixed(4),
+  '--story-grid-shift': `${scrollProgress.value * -220}px`,
+}))
+const flowSegments = [
+  { id: 'segment-01', x: '21%', y: '-6%', w: '1px', h: '19%', step: 0 },
+  { id: 'segment-02', x: '21%', y: '13%', w: '16%', h: '1px', step: 1 },
+  { id: 'segment-03', x: '37%', y: '13%', w: '1px', h: '10%', step: 2 },
+  { id: 'segment-04', x: '28%', y: '23%', w: '9%', h: '1px', step: 3 },
+  { id: 'segment-05', x: '28%', y: '23%', w: '1px', h: '10%', step: 4 },
+  { id: 'segment-06', x: '28%', y: '33%', w: '24%', h: '1px', step: 5 },
+  { id: 'segment-07', x: '52%', y: '33%', w: '1px', h: '11%', step: 6 },
+  { id: 'segment-08', x: '36%', y: '44%', w: '16%', h: '1px', step: 7 },
+  { id: 'segment-09', x: '36%', y: '44%', w: '1px', h: '11%', step: 8 },
+  { id: 'segment-10', x: '24%', y: '55%', w: '12%', h: '1px', step: 9 },
+  { id: 'segment-11', x: '24%', y: '55%', w: '1px', h: '13%', step: 10 },
+  { id: 'segment-12', x: '24%', y: '68%', w: '18%', h: '1px', step: 11 },
+  { id: 'segment-13', x: '42%', y: '68%', w: '1px', h: '26%', step: 11 },
+]
+const flowBranches = [
+  { id: 'branch-01', x: '11%', y: '16%', w: '10%', h: '9%' },
+  { id: 'branch-02', x: '37%', y: '24%', w: '20%', h: '7%' },
+  { id: 'branch-03', x: '52%', y: '39%', w: '16%', h: '8%' },
+  { id: 'branch-04', x: '18%', y: '48%', w: '18%', h: '10%' },
+  { id: 'branch-05', x: '7%', y: '61%', w: '17%', h: '8%' },
+  { id: 'branch-06', x: '42%', y: '72%', w: '22%', h: '9%' },
+]
+const flowModules = [
+  { id: 'module-01', x: '7%', y: '9%', w: '18%', h: '15%' },
+  { id: 'module-02', x: '59%', y: '36%', w: '17%', h: '13%' },
+  { id: 'module-03', x: '12%', y: '70%', w: '21%', h: '14%' },
+]
+const flowTickets = [
+  { id: 'ticket-01', x: '17%', y: '-4%', w: '34%', tone: 'warm', step: 0 },
+  { id: 'ticket-02', x: '34%', y: '8%', w: '31%', tone: 'dim', step: 1 },
+  { id: 'ticket-03', x: '9%', y: '18%', w: '39%', tone: 'amber', step: 2 },
+  { id: 'ticket-04', x: '46%', y: '27%', w: '33%', tone: 'cool', step: 3 },
+  { id: 'ticket-05', x: '21%', y: '38%', w: '28%', tone: 'warm', step: 4 },
+  { id: 'ticket-06', x: '4%', y: '49%', w: '36%', tone: 'dim', step: 5 },
+  { id: 'ticket-07', x: '39%', y: '58%', w: '31%', tone: 'amber', step: 6 },
+  { id: 'ticket-08', x: '15%', y: '67%', w: '38%', tone: 'cool', step: 7 },
+  { id: 'ticket-09', x: '30%', y: '78%', w: '33%', tone: 'warm', step: 8 },
+  { id: 'ticket-10', x: '3%', y: '88%', w: '36%', tone: 'dim', step: 9 },
+  { id: 'ticket-11', x: '38%', y: '98%', w: '34%', tone: 'amber', step: 10 },
+  { id: 'ticket-12', x: '20%', y: '109%', w: '39%', tone: 'cool', step: 11 },
+]
 let scrollFrame = 0
 let manualSelectionUntil = 0
 let compactQuery
@@ -296,11 +409,15 @@ function handleProjectKey(event) {
 
 function updateActiveFromScroll() {
   scrollFrame = 0
-  if (isCompact.value || !storyRef.value || Date.now() < manualSelectionUntil) return
+  if (isCompact.value || !storyRef.value) return
 
   const storyTop = storyRef.value.getBoundingClientRect().top + window.scrollY
   const scrollRange = Math.max(1, storyRef.value.offsetHeight - window.innerHeight)
   const progress = Math.min(1, Math.max(0, (window.scrollY - storyTop) / scrollRange))
+  scrollProgress.value = progress
+
+  if (Date.now() < manualSelectionUntil) return
+
   const nextIndex = Math.round(progress * (timeline.value.length - 1))
 
   setActiveFromTimelineIndex(Math.min(timeline.value.length - 1, Math.max(0, nextIndex)))
@@ -435,16 +552,210 @@ onBeforeUnmount(() => {
   align-items: center;
   z-index: 2;
   background: var(--black);
+  overflow: hidden;
+}
+
+.project-sticky::before {
+  content: '';
+  position: absolute;
+  inset: -12% -8%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center var(--story-grid-shift);
+  opacity: 0.48;
+  transform: translateY(calc(var(--story-progress) * -18px));
+  will-change: transform, background-position;
+}
+
+.project-sticky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, rgba(228, 215, 188, 0.045), transparent 34%),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.94) 0%, rgba(17, 17, 17, 0.66) 52%, rgba(17, 17, 17, 0.93) 100%);
+  opacity: 0.9;
+}
+
+.project-flow-backdrop {
+  position: absolute;
+  top: -30%;
+  bottom: -54%;
+  left: 34%;
+  right: -2%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.86;
+  transform: translate3d(0, calc(var(--story-progress) * -880px), 0);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.project-flow-backdrop::before,
+.project-flow-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.project-flow-backdrop::before {
+  background:
+    radial-gradient(circle at 42% 43%, rgba(228, 215, 188, 0.08), transparent 34%),
+    linear-gradient(90deg, transparent 0%, rgba(17, 17, 17, 0.28) 78%, rgba(17, 17, 17, 0.82) 100%);
+}
+
+.project-flow-backdrop::after {
+  background: linear-gradient(180deg, rgba(17, 17, 17, 0.96) 0%, transparent 14%, transparent 82%, rgba(17, 17, 17, 0.96) 100%);
+}
+
+.flow-ticket,
+.flow-module,
+.flow-segment,
+.flow-branch {
+  position: absolute;
+  display: block;
+}
+
+.flow-segment {
+  left: var(--segment-x);
+  top: var(--segment-y);
+  width: var(--segment-w);
+  height: var(--segment-h);
+  border-radius: 999px;
+  background: rgba(216, 209, 189, 0.22);
+  box-shadow: 0 0 0 1px rgba(216, 209, 189, 0.02);
+  transition: background 0.42s ease, box-shadow 0.42s ease, opacity 0.42s ease;
+}
+
+.flow-segment.active {
+  background: rgba(239, 228, 202, 0.4);
+  box-shadow: 0 0 18px rgba(239, 228, 202, 0.06);
+}
+
+.flow-segment.current {
+  background: rgba(239, 228, 202, 0.72);
+  box-shadow: 0 0 24px rgba(239, 228, 202, 0.14);
+}
+
+.flow-branch {
+  left: var(--branch-x);
+  top: var(--branch-y);
+  width: var(--branch-w);
+  height: var(--branch-h);
+  border-top: 1px solid rgba(216, 209, 189, 0.17);
+  border-left: 1px solid rgba(216, 209, 189, 0.17);
+  opacity: 0.78;
+}
+
+.flow-module {
+  left: var(--module-x);
+  top: var(--module-y);
+  width: var(--module-w);
+  height: var(--module-h);
+  border: 1px solid rgba(239, 228, 202, 0.07);
+  background: rgba(239, 228, 202, 0.018);
+}
+
+.flow-ticket {
+  left: var(--ticket-x);
+  top: var(--ticket-y);
+  width: var(--ticket-w);
+  height: 72px;
+  border: 1px solid rgba(216, 209, 189, 0.09);
+  border-radius: 7px;
+  background: rgba(216, 209, 189, 0.035);
+  opacity: 0.56;
+  transform: translateX(calc(var(--story-progress) * -58px));
+  transition: border-color 0.42s ease, background 0.42s ease, opacity 0.42s ease, transform 0.42s ease;
+}
+
+.flow-ticket.nearby {
+  opacity: 0.8;
+}
+
+.flow-ticket.active {
+  border-color: rgba(239, 228, 202, 0.32);
+  background: rgba(239, 228, 202, 0.095);
+  opacity: 0.96;
+  transform: translateX(calc(var(--story-progress) * -58px)) translateY(-4px);
+}
+
+.ticket-dot,
+.ticket-line,
+.ticket-cell {
+  position: absolute;
+  display: block;
+}
+
+.ticket-dot {
+  left: 22px;
+  top: 28px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(239, 228, 202, 0.68);
+}
+
+.flow-ticket-dim .ticket-dot { background: rgba(216, 209, 189, 0.34); }
+.flow-ticket-amber .ticket-dot { background: rgba(201, 169, 107, 0.58); }
+.flow-ticket-cool .ticket-dot { background: rgba(158, 183, 179, 0.48); }
+
+.ticket-line {
+  height: 3px;
+  background: rgba(216, 209, 189, 0.14);
+}
+
+.ticket-line-primary {
+  left: 50px;
+  top: 22px;
+  width: min(34%, 130px);
+  background: rgba(239, 228, 202, 0.24);
+}
+
+.ticket-line-long {
+  left: 50px;
+  top: 41px;
+  width: 56%;
+}
+
+.ticket-line-short {
+  right: 30px;
+  top: 24px;
+  width: 46px;
+}
+
+.ticket-cell {
+  right: 106px;
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(239, 228, 202, 0.13);
+}
+
+.ticket-cell-one {
+  top: 21px;
+}
+
+.ticket-cell-two {
+  top: 40px;
 }
 
 .project-layout {
+  position: relative;
+  z-index: 3;
   width: 100%;
-  max-width: min(1680px, calc(100vw - clamp(80px, 8vw, 150px)));
+  max-width: min(1680px, calc(100vw - clamp(48px, 5vw, 110px)));
   margin: 0 auto;
-  padding: clamp(54px, 7vw, 92px) clamp(24px, 3.6vw, 64px);
+  padding: clamp(42px, 5vw, 64px) clamp(20px, 2.8vw, 46px);
   display: grid;
-  grid-template-columns: minmax(340px, 0.34fr) minmax(0, 0.66fr);
-  gap: clamp(52px, 5.8vw, 104px);
+  grid-template-columns: minmax(300px, 0.34fr) minmax(0, 0.66fr);
+  gap: clamp(44px, 6vw, 112px);
   align-items: center;
 }
 
@@ -495,15 +806,30 @@ onBeforeUnmount(() => {
 }
 
 .project-choice {
+  position: relative;
   width: 100%;
   background: transparent;
   border: 0;
   border-bottom: 1px solid #242424;
   color: #5d5d5d;
   cursor: pointer;
-  padding: 18px 0 20px;
+  padding: 18px 0 20px 0;
   text-align: left;
-  transition: color 0.22s ease;
+  transition: border-color 0.28s ease, color 0.28s ease, opacity 0.28s ease, padding 0.28s ease;
+}
+
+.project-choice::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 18px;
+  bottom: 20px;
+  width: 2px;
+  background: linear-gradient(180deg, #e4d7bc, rgba(228, 215, 188, 0));
+  opacity: 0;
+  transform: scaleY(0.42);
+  transform-origin: top center;
+  transition: opacity 0.28s ease, transform 0.28s ease;
 }
 
 .choice-heading {
@@ -523,11 +849,13 @@ onBeforeUnmount(() => {
 .choice-number {
   font-size: 0.88rem;
   color: #474747;
+  transition: color 0.28s ease;
 }
 
 .choice-title {
   font-size: clamp(1.35rem, 2vw, 1.75rem);
   line-height: 1.08;
+  transition: transform 0.28s ease;
 }
 
 .choice-summary {
@@ -541,12 +869,30 @@ onBeforeUnmount(() => {
   max-height: 0;
   overflow: hidden;
   transform: translateY(-4px);
-  transition: opacity 0.22s ease, max-height 0.22s ease, transform 0.22s ease;
+  transition: opacity 0.28s ease, max-height 0.32s ease, transform 0.28s ease;
 }
 
 .project-choice:hover,
 .project-choice.active {
   color: var(--white);
+}
+
+.project-choice.active {
+  border-bottom-color: #393939;
+  padding-left: 10px;
+}
+
+.project-choice.active::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.project-choice.active .choice-number {
+  color: #e4d7bc;
+}
+
+.project-choice.active .choice-title {
+  transform: translateX(2px);
 }
 
 .project-choice.active .choice-summary {
@@ -581,7 +927,7 @@ onBeforeUnmount(() => {
 }
 
 .project-preview {
-  --preview-media-height: clamp(320px, 43vh, 440px);
+  --preview-media-height: clamp(280px, 40vh, 420px);
   min-width: 0;
 }
 
@@ -663,7 +1009,7 @@ onBeforeUnmount(() => {
   grid-template-columns: minmax(0, 1fr) minmax(176px, 0.42fr);
   gap: clamp(22px, 3vw, 36px);
   align-items: stretch;
-  height: clamp(240px, 25vh, 300px);
+  height: clamp(210px, 22vh, 270px);
   padding-top: clamp(22px, 3vw, 34px);
 }
 
@@ -968,10 +1314,15 @@ onBeforeUnmount(() => {
   .project-choice,
   .choice-summary,
   .detail-step,
+  .flow-segment,
+  .flow-ticket,
   .mobile-reveal,
   .detail-shift-enter-active,
   .detail-shift-leave-active {
     transition-duration: 0.001ms !important;
+  }
+  .project-sticky::before {
+    transform: none;
   }
   .mobile-reveal {
     opacity: 1;

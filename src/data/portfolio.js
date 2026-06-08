@@ -81,19 +81,19 @@ export const projects = [
     context: 'Designed as the main capstone system for campus safety operations, with the demo centered on how different offices move from report intake to resolution.',
     details: [
       {
-        title: 'Report intake',
+        title: 'Report Intake',
         body: 'Students and staff can submit campus safety concerns with structured details, supporting information, and a clear path into the response workflow.',
       },
       {
-        title: 'Office routing',
+        title: 'Office Routing',
         body: 'Reports move through role-based dashboards so the right office can review, assign, update, and coordinate the next action.',
       },
       {
-        title: 'Resolution tracking',
+        title: 'Resolution Tracking',
         body: 'Each incident keeps its status history visible from intake to closure, making unresolved cases easier to monitor and follow up.',
       },
       {
-        title: 'Operational tools',
+        title: 'Operational Tools',
         body: 'Realtime updates, floor-plan mapping, and office-specific modules support day-to-day coordination beyond a basic report database.',
       },
     ],
@@ -120,19 +120,19 @@ export const projects = [
     context: 'Built for a commissioned client that needed training, assessment, and course assignment flows gathered into one internal LMS.',
     details: [
       {
-        title: 'Skill assessment',
+        title: 'Skill Assessment',
         body: 'Employees can take assessments that identify skill gaps and connect those gaps to measurable training needs.',
       },
       {
-        title: 'Course assignment',
+        title: 'Course Assignment',
         body: 'Admins can manage courses, assign learning paths, and track completion without separating assessment data from training records.',
       },
       {
-        title: 'Certification flow',
+        title: 'Certification Flow',
         body: 'Completed training can produce certificates and reporting outputs that stay connected to the learner profile.',
       },
       {
-        title: 'Connected records',
+        title: 'Connected Records',
         body: 'REST API integrations keep employee, training, and surrounding system data aligned instead of duplicating work across platforms.',
       },
     ],
@@ -159,19 +159,19 @@ export const projects = [
     context: 'Created for academic departments that needed a clearer reservation process from request submission through approval and post-event requirements.',
     details: [
       {
-        title: 'Reservation requests',
+        title: 'Reservation Requests',
         body: 'Departments can submit facility and event requests with schedule details, documents, and the information staff need for review.',
       },
       {
-        title: 'Availability review',
+        title: 'Availability Review',
         body: 'Filtering and status views help administrators compare requests, check venue availability, and avoid losing context across many departments.',
       },
       {
-        title: 'Approval workflow',
+        title: 'Approval Workflow',
         body: 'Committee assignment and administrative review steps keep the booking process traceable from submission to decision.',
       },
       {
-        title: 'Post-event compliance',
+        title: 'Post-event Compliance',
         body: 'The system continues after approval by tracking required post-event documents and completion requirements.',
       },
     ],
