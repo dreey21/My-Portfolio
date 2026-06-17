@@ -181,16 +181,10 @@
         </h2>
       </div>
 
-      <div class="mobile-project-current" aria-live="polite">
-        <span>{{ projectNumber(activeProject) }}</span>
-        <strong>{{ activeProjectData.title }}</strong>
-      </div>
-
       <article
         v-for="(project, projectIndex) in projects"
         :key="project.title"
         class="mobile-project"
-        :ref="el => setMobileProjectRef(el, projectIndex)"
       >
         <div class="mobile-project-head">
           <span>{{ projectNumber(projectIndex) }}</span>
@@ -222,20 +216,171 @@
           <p>{{ project.context }}</p>
         </div>
 
-        <div class="mobile-detail-list">
-          <section
-            v-for="(detail, detailIndex) in projectDetails(project)"
-            :key="detail.title"
-            class="mobile-detail mobile-reveal"
-            :class="{ visible: mobileVisibleFlags[timelineIndexFor(projectIndex, detailIndex)] }"
-            :ref="el => setMobileDetailRef(el, timelineIndexFor(projectIndex, detailIndex))"
+        <div class="mobile-detail-carousel">
+          <div
+            class="mobile-detail-track"
+            :ref="el => setDetailTrackRef(el, projectIndex)"
           >
-            <span>{{ projectNumber(detailIndex) }}</span>
-            <div>
+            <article
+              v-for="(detail, detailIndex) in projectDetails(project)"
+              :key="detail.title"
+              class="mobile-detail-card"
+              :class="`tone-${cardTone(detailIndex)}`"
+              :ref="el => setDetailCardRef(el, projectIndex, detailIndex)"
+            >
+              <!-- FERMS icon: Calendar + Map Pin -->
+              <svg
+                v-if="project.title === 'FERMS'"
+                class="mobile-detail-mark"
+                viewBox="0 0 140 120"
+                aria-hidden="true"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!-- Calendar shadow -->
+                <rect x="5" y="26" width="88" height="76" rx="9" fill="#000" opacity="0.3"/>
+                <!-- Calendar body -->
+                <rect x="1" y="22" width="88" height="76" rx="9" fill="#1e1810"/>
+                <!-- Calendar header -->
+                <rect x="1" y="22" width="88" height="26" rx="9" fill="#b8912a"/>
+                <rect x="1" y="38" width="88" height="10" fill="#b8912a"/>
+                <!-- Rings -->
+                <rect x="19" y="14" width="8" height="20" rx="4" fill="#e4d7bc"/>
+                <rect x="59" y="14" width="8" height="20" rx="4" fill="#e4d7bc"/>
+                <!-- Ring holes -->
+                <circle cx="23" cy="26" r="3" fill="#1e1810"/>
+                <circle cx="63" cy="26" r="3" fill="#1e1810"/>
+                <!-- Day dots row 1 -->
+                <circle cx="15" cy="60" r="4.5" fill="#3a2e1a"/>
+                <circle cx="30" cy="60" r="4.5" fill="#3a2e1a"/>
+                <circle cx="45" cy="60" r="4.5" fill="#c9a96b"/>
+                <circle cx="60" cy="60" r="4.5" fill="#3a2e1a"/>
+                <circle cx="75" cy="60" r="4.5" fill="#3a2e1a"/>
+                <!-- Day dots row 2 -->
+                <circle cx="15" cy="76" r="4.5" fill="#3a2e1a"/>
+                <circle cx="30" cy="76" r="4.5" fill="#3a2e1a"/>
+                <circle cx="45" cy="76" r="4.5" fill="#3a2e1a"/>
+                <circle cx="60" cy="76" r="4.5" fill="#3a2e1a"/>
+                <!-- Pin drop shadow -->
+                <ellipse cx="108" cy="114" rx="10" ry="4" fill="#000" opacity="0.28"/>
+                <!-- Pin body -->
+                <path d="M108 46 C92 46 80 58 80 72 C80 90 108 116 108 116 C108 116 136 90 136 72 C136 58 124 46 108 46Z" fill="#c0392b"/>
+                <!-- Pin highlight -->
+                <path d="M108 46 C95 46 86 55 84 67 C86 56 95 50 108 50 C121 50 130 56 132 67 C130 55 121 46 108 46Z" fill="#e05a4a" opacity="0.55"/>
+                <!-- Pin inner ring -->
+                <circle cx="108" cy="74" r="13" fill="#fff" opacity="0.92"/>
+                <circle cx="108" cy="74" r="8" fill="#c0392b"/>
+              </svg>
+
+              <!-- OSAS icon: Person + Alert Badge -->
+              <svg
+                v-else-if="project.title === 'OSAS'"
+                class="mobile-detail-mark"
+                viewBox="0 0 140 120"
+                aria-hidden="true"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!-- Person shadow -->
+                <ellipse cx="48" cy="112" rx="32" ry="5" fill="#000" opacity="0.22"/>
+                <!-- Torso / uniform -->
+                <path d="M16 82 C16 70 80 70 80 82 L84 110 C84 114 12 114 12 110Z" fill="#1a3a50"/>
+                <!-- Collar shadow -->
+                <path d="M38 70 L48 84 L58 70" fill="#16303f"/>
+                <!-- Badge / tie detail -->
+                <rect x="45" y="74" width="6" height="22" rx="2" fill="#2a5a78" opacity="0.8"/>
+                <!-- Neck -->
+                <rect x="38" y="52" width="20" height="22" rx="7" fill="#d4956a"/>
+                <!-- Head -->
+                <ellipse cx="48" cy="46" rx="22" ry="24" fill="#e8a87c"/>
+                <!-- Hair -->
+                <path d="M26 38 C26 20 70 20 70 38 C70 29 62 20 48 20 C34 20 26 29 26 38Z" fill="#2c1f10"/>
+                <!-- Ears -->
+                <ellipse cx="26" cy="46" rx="4" ry="6" fill="#d4956a"/>
+                <ellipse cx="70" cy="46" rx="4" ry="6" fill="#d4956a"/>
+                <!-- Eyes -->
+                <ellipse cx="41" cy="46" rx="3.5" ry="3.5" fill="#1a0e06"/>
+                <ellipse cx="55" cy="46" rx="3.5" ry="3.5" fill="#1a0e06"/>
+                <circle cx="42.2" cy="45" r="1.3" fill="#fff" opacity="0.7"/>
+                <circle cx="56.2" cy="45" r="1.3" fill="#fff" opacity="0.7"/>
+                <!-- Nose -->
+                <path d="M46 52 Q48 55 50 52" stroke="#c0845a" stroke-width="1.2" stroke-linecap="round"/>
+                <!-- Mouth -->
+                <path d="M43 59 Q48 63 53 59" stroke="#c0845a" stroke-width="1.4" stroke-linecap="round"/>
+                <!-- Chest shield -->
+                <path d="M40 78 L48 74 L56 78 L56 94 C56 98 48 102 48 102 C48 102 40 98 40 94Z" fill="#2a6a9a" opacity="0.65"/>
+                <!-- Shield checkmark -->
+                <path d="M44 86 L47 90 L54 82" stroke="#7ab8d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Alert badge circle -->
+                <circle cx="108" cy="24" r="22" fill="#c0392b"/>
+                <circle cx="108" cy="24" r="18" fill="#e04040"/>
+                <!-- Exclamation body -->
+                <rect x="106" y="12" width="4" height="11" rx="2" fill="#fff"/>
+                <!-- Exclamation dot -->
+                <circle cx="108" cy="29.5" r="2.8" fill="#fff"/>
+              </svg>
+
+              <!-- Core3HireUps icon: Briefcase + Teal Chart -->
+              <svg
+                v-else-if="project.title === 'Core3HireUps'"
+                class="mobile-detail-mark"
+                viewBox="0 0 140 120"
+                aria-hidden="true"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!-- Briefcase shadow -->
+                <rect x="8" y="50" width="90" height="64" rx="9" fill="#000" opacity="0.28"/>
+                <!-- Briefcase body -->
+                <rect x="4" y="46" width="90" height="64" rx="9" fill="#0f2a38"/>
+                <!-- Briefcase lid -->
+                <rect x="4" y="46" width="90" height="28" rx="9" fill="#163344"/>
+                <rect x="4" y="60" width="90" height="14" fill="#163344"/>
+                <!-- Handle outer -->
+                <path d="M30 46 L30 35 C30 27 68 27 68 35 L68 46" stroke="#1e4a60" stroke-width="7" stroke-linecap="round"/>
+                <!-- Handle inner highlight -->
+                <path d="M30 46 L30 35 C30 27 68 27 68 35 L68 46" stroke="#2a6a88" stroke-width="3" stroke-linecap="round"/>
+                <!-- Clasp plate -->
+                <rect x="38" y="58" width="22" height="13" rx="4" fill="#1a3d52"/>
+                <!-- Clasp lock body -->
+                <rect x="42" y="61" width="14" height="7" rx="3" fill="#2a7a8a"/>
+                <!-- Clasp lock dot -->
+                <circle cx="49" cy="64.5" r="2.2" fill="#3a9aaa"/>
+                <!-- Chart bars -->
+                <rect x="14" y="78" width="12" height="26" rx="2" fill="#1e5568" opacity="0.8"/>
+                <rect x="30" y="67" width="12" height="37" rx="2" fill="#2a7a8a" opacity="0.9"/>
+                <rect x="46" y="57" width="12" height="47" rx="2" fill="#3a9aaa"/>
+                <rect x="62" y="65" width="12" height="39" rx="2" fill="#2a7a8a" opacity="0.9"/>
+                <!-- Trend line -->
+                <polyline points="20,102 36,84 52,64 68,76" stroke="#7adce8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Trend dots -->
+                <circle cx="20" cy="102" r="3.5" fill="#7adce8"/>
+                <circle cx="36" cy="84" r="3.5" fill="#7adce8"/>
+                <circle cx="52" cy="64" r="3.5" fill="#7adce8"/>
+                <circle cx="68" cy="76" r="3.5" fill="#7adce8"/>
+                <!-- Person silhouette -->
+                <circle cx="116" cy="54" r="10" fill="#1e4a60"/>
+                <circle cx="116" cy="50" r="7" fill="#d4a882"/>
+                <path d="M104 70 C104 62 128 62 128 70" fill="#163344"/>
+                <path d="M106 70 C106 64 126 64 126 70" fill="#1e5568"/>
+              </svg>
+
+              <span class="mobile-detail-number">{{ projectNumber(detailIndex) }}</span>
               <h4>{{ detail.title }}</h4>
               <p>{{ detail.body }}</p>
-            </div>
-          </section>
+            </article>
+          </div>
+
+          <div class="mobile-detail-dots" aria-label="Project detail selector">
+            <button
+              v-for="(detail, detailIndex) in projectDetails(project)"
+              :key="detail.title"
+              type="button"
+              :class="['detail-step', `tone-${cardTone(detailIndex)}`, { active: mobileDetailIndex[projectIndex] === detailIndex }]"
+              :aria-label="`Show ${detail.title}`"
+              @click="scrollToDetail(projectIndex, detailIndex)"
+            />
+          </div>
         </div>
 
         <ul class="project-stack mobile-stack" aria-label="Technology stack">
@@ -258,9 +403,9 @@ const isCompact = ref(false)
 const activeProject = ref(0)
 const activeDetail = ref(0)
 const scrollProgress = ref(0)
-const mobileProjectRefs = ref([])
-const mobileDetailRefs = ref([])
-const mobileVisibleFlags = ref([])
+const detailTrackRefs = ref([])
+const detailCardRefs = ref([])
+const mobileDetailIndex = ref(projects.map(() => 0))
 const timeline = computed(() => projects.flatMap((project, projectIndex) =>
   projectDetails(project).map((detail, detailIndex) => ({
     projectIndex,
@@ -322,8 +467,7 @@ const flowTickets = [
 let scrollFrame = 0
 let manualSelectionUntil = 0
 let compactQuery
-let mobileProjectObserver
-let mobileRevealObserver
+let detailObservers = []
 
 function projectDetails(project) {
   return project.details?.length
@@ -333,6 +477,11 @@ function projectDetails(project) {
 
 function projectNumber(index) {
   return String(index + 1).padStart(2, '0')
+}
+
+const cardTones = ['warm', 'dim', 'amber', 'cool']
+function cardTone(index) {
+  return cardTones[index % cardTones.length]
 }
 
 function videoSrc(project) {
@@ -347,12 +496,53 @@ function timelineIndexFor(projectIndex, detailIndex = 0) {
   return index === -1 ? 0 : index
 }
 
-function setMobileProjectRef(el, index) {
-  if (el) mobileProjectRefs.value[index] = el
+function setDetailTrackRef(el, projectIndex) {
+  if (el) detailTrackRefs.value[projectIndex] = el
 }
 
-function setMobileDetailRef(el, index) {
-  if (el) mobileDetailRefs.value[index] = el
+function setDetailCardRef(el, projectIndex, detailIndex) {
+  if (!el) return
+  if (!detailCardRefs.value[projectIndex]) detailCardRefs.value[projectIndex] = []
+  detailCardRefs.value[projectIndex][detailIndex] = el
+}
+
+function scrollToDetail(projectIndex, detailIndex) {
+  const card = detailCardRefs.value[projectIndex]?.[detailIndex]
+  card?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+}
+
+function disconnectDetailObservers() {
+  detailObservers.forEach(observer => observer.disconnect())
+  detailObservers = []
+}
+
+function observeDetailCarousels() {
+  disconnectDetailObservers()
+  if (typeof IntersectionObserver === 'undefined') return
+
+  detailTrackRefs.value.forEach((track, projectIndex) => {
+    if (!track) return
+
+    const observer = new IntersectionObserver((entries) => {
+      let bestEntry = null
+      entries.forEach((entry) => {
+        if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
+          bestEntry = entry
+        }
+      })
+      if (bestEntry && bestEntry.intersectionRatio > 0.55) {
+        const cards = detailCardRefs.value[projectIndex] || []
+        const index = cards.indexOf(bestEntry.target)
+        if (index !== -1) mobileDetailIndex.value[projectIndex] = index
+      }
+    }, {
+      root: track,
+      threshold: [0.55, 0.75, 0.95],
+    })
+
+    ;(detailCardRefs.value[projectIndex] || []).forEach(card => card && observer.observe(card))
+    detailObservers.push(observer)
+  })
 }
 
 function setActiveFromTimelineIndex(index) {
@@ -429,63 +619,15 @@ function queueActiveUpdate() {
 }
 
 function disconnectMobileObservers() {
-  mobileProjectObserver?.disconnect()
-  mobileRevealObserver?.disconnect()
-  mobileProjectObserver = null
-  mobileRevealObserver = null
+  disconnectDetailObservers()
 }
 
 function observeMobileProjects() {
   disconnectMobileObservers()
 
-  if (!isCompact.value || typeof IntersectionObserver === 'undefined') {
-    mobileVisibleFlags.value = Array(timeline.value.length).fill(true)
-    return
-  }
+  if (!isCompact.value) return
 
-  mobileVisibleFlags.value = Array(timeline.value.length).fill(false)
-
-  mobileProjectObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return
-
-      const index = mobileProjectRefs.value.indexOf(entry.target)
-      if (index !== -1) {
-        activeProject.value = index
-        activeDetail.value = 0
-      }
-    })
-  }, {
-    rootMargin: '-24% 0px -54% 0px',
-    threshold: 0.01,
-  })
-
-  mobileRevealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return
-
-      const index = mobileDetailRefs.value.indexOf(entry.target)
-      if (index !== -1) mobileVisibleFlags.value[index] = true
-      mobileRevealObserver.unobserve(entry.target)
-    })
-  }, {
-    rootMargin: '0px 0px -12% 0px',
-    threshold: 0.12,
-  })
-
-  nextTick(() => {
-    mobileProjectRefs.value.forEach(el => el && mobileProjectObserver.observe(el))
-    mobileDetailRefs.value.forEach((el, index) => {
-      if (!el) return
-
-      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) {
-        mobileVisibleFlags.value[index] = true
-        return
-      }
-
-      mobileRevealObserver.observe(el)
-    })
-  })
+  nextTick(observeDetailCarousels)
 }
 
 function updateCompactMode(event) {
@@ -1115,42 +1257,6 @@ onBeforeUnmount(() => {
   line-height: 0.98;
 }
 
-.mobile-project-current {
-  position: sticky;
-  top: 58px;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 46px;
-  margin: 0 -20px 28px;
-  padding: 12px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(17, 17, 17, 0.88);
-  backdrop-filter: blur(12px);
-}
-
-.mobile-project-current span,
-.mobile-project-current strong {
-  font-family: var(--font-label);
-  text-transform: uppercase;
-}
-
-.mobile-project-current span {
-  color: #696969;
-  font-size: 0.68rem;
-  letter-spacing: 3px;
-}
-
-.mobile-project-current strong {
-  color: var(--white);
-  font-size: 0.82rem;
-  letter-spacing: 4px;
-  font-weight: 600;
-}
-
 .mobile-project {
   padding: 0 0 42px;
   border-bottom: 1px solid #252525;
@@ -1196,39 +1302,90 @@ onBeforeUnmount(() => {
   line-height: 1.62;
 }
 
-.mobile-detail-list {
-  border-top: 1px solid #252525;
+.mobile-detail-carousel {
   margin-top: 24px;
 }
 
-.mobile-detail {
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+.mobile-detail-track {
+  display: flex;
   gap: 14px;
-  padding: 18px 0;
-  border-bottom: 1px solid #252525;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-top: 36px;
+  padding-bottom: 2px;
+  margin-top: -36px;
 }
 
-.mobile-reveal {
-  opacity: 0.18;
-  transform: translateY(18px);
-  transition: opacity 0.48s ease, transform 0.48s ease, border-color 0.48s ease;
+.mobile-detail-track::-webkit-scrollbar {
+  display: none;
 }
 
-.mobile-reveal.visible {
+.mobile-detail-card {
+  position: relative;
+  flex: 0 0 86%;
+  scroll-snap-align: start;
+  border: 1px solid #242424;
+  background: rgba(255, 255, 255, 0.015);
+  padding: 30px 22px 24px;
+  min-height: 168px;
+  overflow: visible;
+}
+
+/* ── Per-project icon replacing the old generic ticket mark ── */
+.mobile-detail-mark {
+  position: absolute;
+  top: -28px;
+  right: -22px;
+  width: 110px;
+  height: auto;
+  opacity: 0.92;
+  transform: rotate(7deg);
+  pointer-events: none;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mobile-detail-card:hover .mobile-detail-mark,
+.mobile-detail-card:focus-within .mobile-detail-mark {
   opacity: 1;
-  transform: translateY(0);
-  border-bottom-color: #343434;
+  transform: rotate(9deg) translateY(-3px);
 }
 
-.mobile-detail > span {
-  color: #555;
+.mobile-detail-card::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 0;
+  width: 24px;
+  height: 3px;
+  background: var(--card-accent-solid, #e4d7bc);
+  opacity: 0.75;
+  transform: skewX(-10deg);
+  transform-origin: left center;
+}
+
+.mobile-detail-card.tone-warm  { --card-accent-ghost: rgba(228, 215, 188, 0.18); --card-accent-solid: #e4d7bc; }
+.mobile-detail-card.tone-dim   { --card-accent-ghost: rgba(216, 209, 189, 0.16); --card-accent-solid: #d8d1bd; }
+.mobile-detail-card.tone-amber { --card-accent-ghost: rgba(201, 169, 107, 0.22); --card-accent-solid: #c9a96b; }
+.mobile-detail-card.tone-cool  { --card-accent-ghost: rgba(158, 183, 179, 0.2);  --card-accent-solid: #9eb7b3; }
+
+.mobile-detail-card .mobile-detail-number {
+  position: relative;
+  z-index: 1;
+  display: block;
+  color: var(--card-accent-solid, #888);
   font-family: var(--font-label);
   font-size: 0.7rem;
   letter-spacing: 2px;
+  margin-bottom: 12px;
 }
 
-.mobile-detail h4 {
+.mobile-detail-card h4 {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-body);
   font-size: 1.2rem;
   line-height: 1.15;
@@ -1237,10 +1394,23 @@ onBeforeUnmount(() => {
   margin-bottom: 8px;
 }
 
-.mobile-detail p {
+.mobile-detail-card p {
+  position: relative;
+  z-index: 1;
   color: #a9a9a9;
   font-size: 0.96rem;
   line-height: 1.58;
+}
+
+.mobile-detail-dots .detail-step.tone-warm.active  { background: #e4d7bc; }
+.mobile-detail-dots .detail-step.tone-dim.active   { background: #d8d1bd; }
+.mobile-detail-dots .detail-step.tone-amber.active { background: #c9a96b; }
+.mobile-detail-dots .detail-step.tone-cool.active  { background: #9eb7b3; }
+
+.mobile-detail-dots {
+  display: flex;
+  gap: 9px;
+  margin-top: 16px;
 }
 
 .mobile-stack {
@@ -1302,12 +1472,6 @@ onBeforeUnmount(() => {
     flex-direction: column;
     gap: 5px;
   }
-  .mobile-project-current {
-    top: 54px;
-  }
-  .mobile-project-current strong {
-    letter-spacing: 3px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1316,7 +1480,6 @@ onBeforeUnmount(() => {
   .detail-step,
   .flow-segment,
   .flow-ticket,
-  .mobile-reveal,
   .detail-shift-enter-active,
   .detail-shift-leave-active {
     transition-duration: 0.001ms !important;
@@ -1324,9 +1487,8 @@ onBeforeUnmount(() => {
   .project-sticky::before {
     transform: none;
   }
-  .mobile-reveal {
-    opacity: 1;
-    transform: none;
+  .mobile-detail-track {
+    scroll-behavior: auto;
   }
 }
 </style>
