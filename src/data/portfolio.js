@@ -65,6 +65,45 @@ export const tabs = [
 // Set hasVideo: false to show a reserved video frame instead.
 export const projects = [
   {
+    title: 'FERMS',
+    subtitle: 'Facility and Event Reservation Management System',
+    tag: 'Commissioned / Fullstack',
+    cat: 'commissioned',
+    featured: true,
+    hasVideo: true,
+    youtubeId: 'I2tpe4FgIb0',
+    desc: 'Facility and event booking platform for 24+ academic departments with real-time filtering, document management, post-event compliance monitoring, and integration with 2 external systems via RESTful API.',
+    stack: ['Laravel', 'PHP', 'Blade', 'Alpine.js', 'MySQL', 'REST API'],
+    label: 'Commissioned Project',
+    year: '2026',
+    role: 'Full-stack developer',
+    summary: 'A booking and compliance system designed for academic facility reservations, documentation, and external service coordination.',
+    context: 'Created for academic departments that needed a clearer reservation process from request submission through approval and post-event requirements.',
+    details: [
+      {
+        title: 'Reservation Requests',
+        body: 'Departments can submit facility and event requests with schedule details, documents, and the information staff need for review.',
+      },
+      {
+        title: 'Availability Review',
+        body: 'Filtering and status views help administrators compare requests, check venue availability, and avoid losing context across many departments.',
+      },
+      {
+        title: 'Approval Workflow',
+        body: 'Committee assignment and administrative review steps keep the booking process traceable from submission to decision.',
+      },
+      {
+        title: 'Post-event Compliance',
+        body: 'The system continues after approval by tracking required post-event documents and completion requirements.',
+      },
+    ],
+    notes: [
+      'The booking flow is structured around availability, documents, committee review, and status visibility.',
+      'Post-event compliance is included so the system does not stop at reservation approval.',
+      'Filtering and department-level views help staff manage many venue requests without losing context.',
+    ],
+  },
+  {
     title: 'OSAS',
     subtitle: 'Campus Safety and Operations Platform',
     tag: 'Capstone / Fullstack / Realtime',
@@ -103,7 +142,7 @@ export const projects = [
       'Realtime updates, floor-plan mapping, and office-specific modules make the system feel operational rather than just CRUD-based.',
     ],
   },
-  {
+   {
     title: 'Core3HireUps',
     subtitle: 'Training and Development Management System',
     tag: 'Commissioned / Fullstack',
@@ -140,45 +179,6 @@ export const projects = [
       'The core story is employee skill gaps turning into assigned courses and measurable training progress.',
       'Certificates, assessments, and reporting are treated as part of the same learning record.',
       'External API connections keep the LMS aligned with the surrounding systems instead of becoming isolated data.',
-    ],
-  },
-  {
-    title: 'FERMS',
-    subtitle: 'Facility and Event Reservation Management System',
-    tag: 'Commissioned / Fullstack',
-    cat: 'commissioned',
-    featured: false,
-    hasVideo: false,
-    youtubeId: null, // Replace with actual video ID
-    desc: 'Facility and event booking platform for 24+ academic departments with real-time filtering, document management, post-event compliance monitoring, and integration with 2 external systems via RESTful API.',
-    stack: ['Laravel', 'PHP', 'Blade', 'Alpine.js', 'MySQL', 'REST API'],
-    label: 'Commissioned Project',
-    year: '2026',
-    role: 'Full-stack developer',
-    summary: 'A booking and compliance system designed for academic facility reservations, documentation, and external service coordination.',
-    context: 'Created for academic departments that needed a clearer reservation process from request submission through approval and post-event requirements.',
-    details: [
-      {
-        title: 'Reservation Requests',
-        body: 'Departments can submit facility and event requests with schedule details, documents, and the information staff need for review.',
-      },
-      {
-        title: 'Availability Review',
-        body: 'Filtering and status views help administrators compare requests, check venue availability, and avoid losing context across many departments.',
-      },
-      {
-        title: 'Approval Workflow',
-        body: 'Committee assignment and administrative review steps keep the booking process traceable from submission to decision.',
-      },
-      {
-        title: 'Post-event Compliance',
-        body: 'The system continues after approval by tracking required post-event documents and completion requirements.',
-      },
-    ],
-    notes: [
-      'The booking flow is structured around availability, documents, committee review, and status visibility.',
-      'Post-event compliance is included so the system does not stop at reservation approval.',
-      'Filtering and department-level views help staff manage many venue requests without losing context.',
     ],
   },
 ]
